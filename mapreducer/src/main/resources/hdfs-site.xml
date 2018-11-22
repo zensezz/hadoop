@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+	<property>
+                <name>dfs.replication</name>
+                <value>3</value>
+        </property>
+		<!--数据块副本数为3-->
+	<property>
+                <name>dfs.permissions</name>
+                <value>false</value>
+        </property>
+	<property>
+                <name>dfs.permissions.enabled</name>
+                <value>false</value>
+        </property>
+		<!--权限默认配置为false-->
+	<property>
+                <name>dfs.nameservices</name>
+                <value>mycluster</value>
+        </property>
+		<!--命名空间，它的值与fs.defaultFS的值要对应，namenode高可用之后有两个namenode，mycluster是对外提供的统一入口-->
+	<property>
+                <name>dfs.ha.namenodes.mycluster</name>
+                <value>nn1,nn2</value>
+        </property>
+		<!-- 指定 nameService 是 mycluster时的nameNode有哪些，这里的值也是逻辑名称，名字随便起，相互不重复即可-->
+        <property>
+                <name>dfs.namenode.rpc-address.mycluster.nn1</name>
+                <value>z1:9000</value>
+        </property>
+        <property>
+                <name>dfs.namenode.http-address.mycluster.nn1</name>
+                <value>z1:50070</value>
+        </property>
+	<property>
+                <name>dfs.namenode.rpc-address.mycluster.nn2</name>
+                <value>z2:9000</value>
+        </property>
+        <property>
+                <name>dfs.namenode.http-address.mycluster.nn2</name>
+                <value>z2:50070</value>
+        </property>
+	<property>
+                <name>dfs.ha.automatic-failover.enabled</name>
+                <value>true</value>
+        </property>
+		<!--启动故障自动恢复-->
+        <property>
+                <name>dfs.namenode.shared.edits.dir</name>
+                <value>qjournal://z1:8485;z2:8485;z3:8485/mycluster</value>
+        </property>
+		<!--指定NameNode的元数据在JournalNode上的存放位置-->
+	<property>
+                <name>dfs.client.failover.proxy.provider.mycluster</name>
+                <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        </property>
+		<!--指定 mycluster 出故障时，哪个实现类负责执行故障切换-->
+        <property>
+                <name>dfs.journalnode.edits.dir</name>
+                <value>/home/zz/data/journaldata/jn</value>
+        </property>
+		<!-- 指定JournalNode在本地磁盘存放数据的位置 -->
+	<property>
+                <name>dfs.ha.fencing.methods</name>
+                <value>shell(/bin/true)</value>
+        </property>
+		<!-- 配置隔离机制,shell通过ssh连接active namenode节点，杀掉进程-->
+        <property>
+                <name>dfs.ha.fencing.ssh.private-key-files</name>
+                <value>/home/zz/.ssh/id_rsa</value>
+        </property>
+		<!-- 为了实现SSH登录杀掉进程，还需要配置免密码登录的SSH密匙信息 -->
+	<property>
+                <name>dfs.ha.fencing.ssh.connect-timeout</name>
+                <value>10000</value>
+        </property>
+        <property>
+                <name>dfs.namenode.handler.count</name>
+                <value>100</value>
+        </property>
+</configuration>
