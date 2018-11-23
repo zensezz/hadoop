@@ -7,17 +7,25 @@ import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class JobUtil {
     private static Job job;
     private static Path input ;
     private static Path output;
+    private static Path catchPath ;
     public static void setConf(Configuration cc, String name ,String in,String out, Class cl ) throws IOException, IOException {
         job = Job.getInstance(cc,name);
         job.setJarByClass(cl);
         input = new Path(in);
         output = new Path(out);
     }
+    public static void setCatch(String c) throws IOException, IOException, URISyntaxException {
+        catchPath = new Path(c);
+        job.addCacheArchive(new URI(catchPath + "#itemUserScore1"));
+    }
+
     public static void setCombiner(Class<? extends Reducer> c){
         if (c!=null) {
             job.setCombinerClass(c);
