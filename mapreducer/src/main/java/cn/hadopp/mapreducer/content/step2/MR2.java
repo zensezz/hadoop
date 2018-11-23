@@ -20,7 +20,7 @@ public class MR2 extends Configured implements Tool {
     public int run(String[] strings) throws Exception {
         Configuration conf = getConf();
         JobUtil.setConf(conf, "step2", conf.get("in"), conf.get("out"), this.getClass());
-        JobUtil.setCatch(conf.get("catch"));
+        JobUtil.setCatch(conf.get("catch"),"#itemUserScore1");
         JobUtil.setMapper(Mapper2.class, Text.class,Text.class, TextInputFormat.class);
         JobUtil.setReducer(Reducer2.class, Text.class, Text.class, TextOutputFormat.class);
         return JobUtil.commit();

@@ -21,9 +21,9 @@ public class JobUtil {
         input = new Path(in);
         output = new Path(out);
     }
-    public static void setCatch(String c) throws IOException, IOException, URISyntaxException {
+    public static void setCatch(String c,String s) throws IOException, IOException, URISyntaxException {
         catchPath = new Path(c);
-        job.addCacheArchive(new URI(catchPath + "#itemUserScore1"));
+        job.addCacheArchive(new URI(catchPath + s ));
     }
 
     public static void setCombiner(Class<? extends Reducer> c){
