@@ -12,6 +12,7 @@
         <module>mapreducer</module>
         <module>zookeeper</module>
         <module>hbase</module>
+        <module>sparkjava</module>
     </modules>
 
 
